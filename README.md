@@ -1,20 +1,20 @@
 # pi-orca
 
-A skills-only Pi package for Orca-managed development. The previous TypeScript bridge experiment is superseded; Git history preserves it at `8d98328` and earlier commits for audit.
+Historical retired experiment for Orca-managed Pi development. The TypeScript bridge and later skills-only package directions are superseded by a native local skill; Git history preserves the experiment at `8d98328` and later simplification commits for audit.
 
-## What this package provides
+## Current direction
 
-- One skill: [`orca-development`](skills/orca-development/SKILL.md).
-- No Pi extension, SDK wrapper, scheduler, broker, registry, custom runtime, build step, or unit-test harness.
-- Guidance that points leads to native Orca CLI/orchestration capabilities and version-matched public guides instead of hardcoded recipes.
+Use a local skill at `~/.agents/skills/orca-development/SKILL.md` for active Orca development guidance. Native Orca CLI/orchestration capabilities and their version-matched public guides are the source of truth; this repository is retained only as historical evidence, not as the recommended install path.
 
-## Install for review
+## What this repository contains
 
-```bash
-pi install /absolute/path/to/pi-orca
-```
+- Historical skill text at [`skills/orca-development/SKILL.md`](skills/orca-development/SKILL.md).
+- Historical evidence that the custom Pi extension, SDK wrapper, scheduler, broker, registry, runtime, build step, and unit-test harness were removed.
+- Documentation of the operating boundaries that informed the local-skill replacement.
 
-The manifest exposes only `./skills`. Installing does not change global Orca/Pi settings beyond the explicit package entry created by `pi install`.
+## Installation
+
+Package installation from this repository is no longer recommended. If you are reviewing the archived experiment anyway, inspect files directly instead of adding it to Pi settings.
 
 ## Verification
 
