@@ -1,5 +1,7 @@
 # pi-orca
 
+> **Experimental implementation candidate — not live-accepted.** This source is published for review and trials only. Automatic wakeup, recovery behavior, old-extension replacement, global rollout, and Taskdesk-related gates have **not** passed; do not treat this package as production-ready coordination infrastructure.
+
 A thin Pi package that makes Orca's existing orchestration convenient from a lead Pi session. It exposes exactly one extension (`src/index.ts`) and one workflow skill (`skills/orca-development`); Orca remains the owner of worktrees, terminals, Tasks, Dispatches, messages, cleanup, and lifecycle receipts.
 
 ## What it adds
@@ -40,12 +42,23 @@ Inbox injection is attributed and queued as a follow-up, never human input or au
 
 Verified cleanup currently accepts exact released ownership, verified immediate reuse on the same terminal in this Run, or observed runtime `user_owned`/`user_takeover` retention. Other retention forms fail closed and remain a live gate. No worker is stopped or released automatically by this extension. See [live verification](docs/live-verification.md) for pending gates.
 
-## Installation after acceptance
+## Experimental clone/install for review trials
 
-After live wakeup testing and separate rollout approval, install locally with:
+Clone the published candidate wherever you keep source checkouts, then install that local path only in an explicitly approved trial Pi environment:
 
 ```bash
-pi install /home/alex/Work/pi-orca
+git clone https://github.com/alexradunet/pi-orca-subagents.git
+cd pi-orca-subagents
+bun install --frozen-lockfile
+bun run check
+bun test
+pi install "$PWD"
 ```
 
-Do not remove older Pi coordination packages or edit project instructions until the documented rollout gate is approved.
+Equivalent portable local install form after cloning:
+
+```bash
+pi install /path/to/pi-orca-subagents
+```
+
+Do not remove older Pi coordination packages, edit project instructions, change global settings, or use this as a replacement workflow until the documented live rollout gates are approved.
