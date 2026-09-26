@@ -7,7 +7,7 @@ This branch replaces the former Pi extension bridge with a skills-only package. 
 - Package manifest now exposes only `./skills`.
 - `skills/orca-development/SKILL.md` is the single live resource.
 - TypeScript source, bridge tests, fixtures, lockfile, and build scripts were removed because they served only the superseded custom runtime.
-- Native Orca CLI/orchestration owns Tasks, Dispatches, wake notifications, resource state, and cleanup.
+- Native Orca CLI/orchestration owns Tasks, Dispatches, mailbox/lifecycle state, resource state, and cleanup; leads should use documented bounded `check --wait`/native orchestration waits while supervising pending work rather than assuming an ended turn will automatically resume.
 
 ## Rollout boundary
 
@@ -20,4 +20,4 @@ Installing or removing any package, disabling older coordination resources, laun
 - Confirm docs describe native Orca as source of truth and do not present old bridge commands as live instructions.
 - Run `git diff --check` and inspect `git status --short`.
 
-Do not claim the migration has passed live Orca acceptance until the parent/coordinator reports that scoped native acceptance has passed.
+Do not claim the migration has passed live Orca acceptance until the parent/coordinator reports a full scoped native acceptance pass. The 2026-09-26 Pi `0.86.1` / Orca `1.4.192` run is partial evidence only because automatic idle mailbox wake was not observed and worker release remained unresolved.

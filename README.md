@@ -33,6 +33,6 @@ There are no meaningful `bun run check` or `bun test` targets after removing the
 
 ## Operating boundary
 
-Use Orca as the source of truth for worktrees, terminals, Tasks, Dispatches, lifecycle notifications, questions, completion evidence, and resource cleanup. Leads choose decomposition, tools/agents, concurrency, and inspection depth within the user's authorized scope and budget; this package does not impose a fixed slot count or keep private Pi session state.
+Use Orca as the source of truth for worktrees, terminals, Tasks, Dispatches, mailbox/lifecycle state, questions, completion evidence, and resource cleanup. While supervising pending work, use the documented bounded `check --wait`/native orchestration wait flow; do not assume that ending a turn automatically resumes on mailbox activity. Leads choose decomposition, tools/agents, concurrency, and inspection depth within the user's authorized scope and budget; this package does not impose a fixed slot count or keep private Pi session state.
 
 Do not merge, push, publish, remove packages, alter global settings, or delete worktrees unless the user explicitly authorizes that action.

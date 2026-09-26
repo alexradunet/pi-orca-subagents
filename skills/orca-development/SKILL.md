@@ -14,7 +14,7 @@ Use this skill when a lead Pi session is doing source work in Orca and may need 
 ## Principles
 
 - Let the lead choose the process: direct edit, inspection, one worker, several workers, or no workers, based on the user's scope, risk, and budget.
-- Native Orca owns worktrees, terminals, Tasks, Dispatches, inbox/wake notifications, lifecycle receipts, and cleanup state. Do not build or simulate a second runtime in Pi session memory.
+- Native Orca owns worktrees, terminals, Tasks, Dispatches, mailbox/lifecycle state, lifecycle receipts, and cleanup state. Do not build or simulate a second runtime in Pi session memory, and do not assume that ending the lead turn automatically resumes on mailbox activity.
 - Keep one writer per checkout. A lead may inspect many checkouts, but only the checkout's owning writer changes its files unless ownership is explicitly transferred.
 - Use actual Orca Task and Dispatch identities in worker prompts, messages, reports, and cleanup decisions; never substitute guessed names or local-only state.
 - Treat worker completion as evidence for review, not acceptance. Review the report, diff, and relevant terminal/output before integrating or closing work.
@@ -27,7 +27,7 @@ Use this skill when a lead Pi session is doing source work in Orca and may need 
 3. Decide the smallest effective execution shape: direct implementation, targeted worker dispatch, parallel independent workers, reviewer, or integration worker. Avoid fixed concurrency policies; stay within explicit user/coordinator limits.
 4. For each worker, provide the objective, repo/base/ref, owned files or components, prohibited areas, success criteria, verification expectations, STOP/ask conditions, and required completion evidence.
 5. Answer worker questions exactly once through Orca's supervised ask/reply flow. If a question asks for a choice, answer the choice asked; if it is malformed or ambiguous, request clarification instead of inventing intent.
-6. Account for whole FIFO message deliveries before acknowledging them. Do not acknowledge a batch until every message in that delivery has been read, routed, or deliberately recorded for follow-up.
+6. Account for whole FIFO message deliveries before acknowledging them. Do not acknowledge a batch until every message in that delivery has been read, routed, or deliberately recorded for follow-up. While supervising pending work, use the documented bounded `check --wait` or equivalent native orchestration wait; do not rely on idle mailbox wake as a guarantee.
 7. On unknown mutations or uncertain delivery/launch/cleanup outcomes, inspect authoritative Orca state and retained evidence. Do not blindly retry, duplicate answers, or replace workers while identity or side effects are unclear.
 8. Preserve useful edits and failed states until reviewed. Failed workers can contain valuable commits, diffs, logs, or repro evidence.
 9. Use Orca resource cleanup for settled owned worker terminals/worktrees when cleanup is authorized. Do not stop or remove unrelated user/setup terminals.
@@ -38,4 +38,4 @@ Ask workers to report concise evidence: Task/Dispatch IDs, branch/base/commit or
 
 ## Native runtime nudges vs old bridge evidence
 
-Orca may inject lifecycle nudges, inbox messages, and wake notifications directly. Treat those as native runtime behavior. Historical custom bridge trial evidence from this repository is preserved only as migration context and must not be cited as proof that a new migration has passed.
+Orca owns lifecycle nudges, inbox messages, and mailbox state as native runtime behavior, but observed delivery/wake semantics depend on the documented orchestration flow in use. Historical custom bridge trial evidence from this repository is preserved only as migration context, and partial native evidence with a missed idle wake must not be cited as proof that a new migration has passed.
