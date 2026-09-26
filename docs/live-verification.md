@@ -43,7 +43,7 @@ An earlier draft had failing shallow mocks and a fast-empty-wait test hang. Thos
 
 A dedicated lead loaded only this extension and exposed the expected tools: `read`, `bash`, `edit`, `write`, `orca_delegate`, and `orca_inbox`. Binding to Run `run_97fa33433029` succeeded at 12:25:20, with Orca runtime `1.4.192`; this confirms extension load and Run binding only, not end-to-end delivery.
 
-The trial then made a procedure error: after the bridge was already bound, the test lead called raw orchestration `run-use` at 12:27:41. The bridge checkpoint became paused within about 200 ms and the TUI showed `Invalid inbox authority/connection state`. The exact cause of the cancelled receipt was not captured, so this record does not diagnose a source-code bug.
+The trial then made a procedure error: after the bridge was already bound, the test lead called raw orchestration `run-use` at 12:27:41. The bridge checkpoint became paused within about 200 ms and the TUI showed `Invalid inbox authority/connection state`. The exact returned error/cancellation record was not captured, so causality and a source-code defect are unproven; we observed `Invalid inbox authority/connection state` after raw `run-use`, not an actual retained `cancelled=true` receipt.
 
 Both custom `pi --no-extensions` `worker-start --terminal` attempts returned `ok: true` but failed at `stage=dispatch_input` with `lastError=agent_prompt_stalled`, even though the worker prompts later executed. These are runtime-start/input-readiness blockers for this trial. Do not retry live orchestration without new explicit approval.
 
@@ -67,7 +67,7 @@ The lead received native runtime nudges as ordinary USER messages at 12:29:56 an
 | Bridge `orca_inbox pending`/`ack` handles completion and cleanup | FAILED/UNVERIFIED: pending returned `No active Delivery`; raw CLI was used incorrectly |
 | Pending-question reload/replay and session/tree ownership live behavior | NOT RUN |
 | Live failed completion remains failed | OBSERVED via raw CLI only; not a bridge acceptance pass |
-| Explicit stop of approved fixture attempt leaves unrelated terminals/worktrees intact | OBSERVED: fixtures preserved, no force-close |
+| Explicit stop of approved fixture attempt leaves unrelated terminals/worktrees intact | NOT RUN: no explicit worker-stop test; fixture preservation alone is not acceptance |
 | Pre-existing/explicit-retain terminal cleanup evidence | OBSERVED retained external terminals; bridge cleanup acceptance still unverified |
 | Full old-extensions-unloaded acceptance and post-migration round trip | NOT RUN |
 | Global package removal, owner instruction patch and Taskdesk regression gates | NOT RUN; rollout not authorized |
