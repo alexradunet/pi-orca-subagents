@@ -1,9 +1,0 @@
-{
-  "ok": false,
-  "result": {
-    "stage": "worker-start",
-    "effects": { "taskId": "task_example" },
-    "residualResources": ["terminal outcome unknown; inspect worker-show"],
-    "recovery": { "command": ["orchestration", "worker-show", "--dispatch", "ctx_example", "--json"] }
-  }
-}

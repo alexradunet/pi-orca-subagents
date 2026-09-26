@@ -1,21 +1,37 @@
 ---
 name: orca-development
-description: Use for Pi lead development workflows that combine /skill:improve planning with Orca-supervised parallel workers, review, acceptance, integration, and cleanup.
+description: Use when leading Pi development work in Orca: choose an appropriate short process, inspect with the native Orca CLI, coordinate supervised Tasks/Dispatches, review worker evidence, and clean up resources without using a custom orchestration runtime.
 ---
 
-# Orca Development Workflow
+# Orca Development
 
-Use this skill when a lead Pi session is coordinating source work through Orca. The installed Orca guide remains authoritative for exact CLI details; this skill describes the workflow and division of responsibility.
+Use this skill when a lead Pi session is doing source work in Orca and may need planning, decomposition, workers, review, or cleanup. Orca's installed CLI guide is authoritative for exact commands: resolve the CLI for the current environment, run `orca skills get orca-cli` (or the selected executable's equivalent), and follow its version-matched public guide.
 
-1. Start with `/skill:improve` when auditing or planning. The improve role is advisory/read-only: vet findings, write plans, and preserve human publication authority.
-2. Ask the user to select work or explicitly authorize a bounded set. Do not turn every suggestion into automatic execution.
-3. Partition work by exclusive files/components and dependencies. Use a recorded common base for independent branches; wait for accepted dependencies or an explicitly selected stacked ref for dependent work.
-4. Launch ready Tasks up to the chosen Orca bridge ceiling. Each worker brief must include objective, repo/ref, owned files, prohibited files/data, success criteria, verification commands, expected report, and STOP/ask conditions.
-5. Writing workers do not load the read-only improve skill as their execution role. They use Orca's injected `ask` and `worker_done` lifecycle contract, not Intercom, guessed coordinator identities, or local-only prompts.
-6. A worker report must contain branch/base/commit or diff location, modified files, checks actually run, failures, and residual risks. Terminal idle or exit alone is not success.
-7. The lead handles questions and completion deliveries through the bound Orca inbox. A follow-up `send` is mailbox delivery, not guaranteed prompt injection.
-8. Once the bridge is bound to a Run, do **not** call raw orchestration `run-use`, `run-create`, `check`, `reply`, or `ack` for that Run. Use `/orca` controls and `orca_inbox`; if the bridge pauses or `orca_inbox pending` reports `No active Delivery`, stop and inspect rather than bypassing the bridge with raw CLI delivery commands.
-9. Review candidate diffs with fresh context when useful. Return revisions to the owning worker or a replacement; use one integration worker only after authorization and rerun all gates.
-10. Release exact settled owned agent terminals through Orca after accepted completion or failure. Do not delete worktrees or setup/user terminals as cleanup. Report failures as failures.
+## Principles
 
-If Orca ownership, delivery acknowledgement, or launch semantics are unclear, pause and inspect/ask rather than building a second coordination system.
+- Let the lead choose the process: direct edit, inspection, one worker, several workers, or no workers, based on the user's scope, risk, and budget.
+- Native Orca owns worktrees, terminals, Tasks, Dispatches, inbox/wake notifications, lifecycle receipts, and cleanup state. Do not build or simulate a second runtime in Pi session memory.
+- Keep one writer per checkout. A lead may inspect many checkouts, but only the checkout's owning writer changes its files unless ownership is explicitly transferred.
+- Use actual Orca Task and Dispatch identities in worker prompts, messages, reports, and cleanup decisions; never substitute guessed names or local-only state.
+- Treat worker completion as evidence for review, not acceptance. Review the report, diff, and relevant terminal/output before integrating or closing work.
+- Do not merge, push, publish, install/remove packages, change global settings, or delete worktrees without explicit authorization.
+
+## Lead workflow
+
+1. Clarify the requested outcome and constraints. Use `/skill:improve` only when an advisory review/planning role is useful; that role is read-only when used, but ordinary leads and writers are not blanket read-only.
+2. Inspect current repo state and relevant docs. If Orca state matters, use the native Orca CLI guide rather than remembered command recipes.
+3. Decide the smallest effective execution shape: direct implementation, targeted worker dispatch, parallel independent workers, reviewer, or integration worker. Avoid fixed concurrency policies; stay within explicit user/coordinator limits.
+4. For each worker, provide the objective, repo/base/ref, owned files or components, prohibited areas, success criteria, verification expectations, STOP/ask conditions, and required completion evidence.
+5. Answer worker questions exactly once through Orca's supervised ask/reply flow. If a question asks for a choice, answer the choice asked; if it is malformed or ambiguous, request clarification instead of inventing intent.
+6. Account for whole FIFO message deliveries before acknowledging them. Do not acknowledge a batch until every message in that delivery has been read, routed, or deliberately recorded for follow-up.
+7. On unknown mutations or uncertain delivery/launch/cleanup outcomes, inspect authoritative Orca state and retained evidence. Do not blindly retry, duplicate answers, or replace workers while identity or side effects are unclear.
+8. Preserve useful edits and failed states until reviewed. Failed workers can contain valuable commits, diffs, logs, or repro evidence.
+9. Use Orca resource cleanup for settled owned worker terminals/worktrees when cleanup is authorized. Do not stop or remove unrelated user/setup terminals.
+
+## Worker completion evidence
+
+Ask workers to report concise evidence: Task/Dispatch IDs, branch/base/commit or diff location, files changed, checks actually run, failures, unresolved risks, and whether cleanup is safe. A successful `worker_done` means the worker asserts completion; the lead still decides acceptance after review.
+
+## Native runtime nudges vs old bridge evidence
+
+Orca may inject lifecycle nudges, inbox messages, and wake notifications directly. Treat those as native runtime behavior. Historical custom bridge trial evidence from this repository is preserved only as migration context and must not be cited as proof that a new migration has passed.

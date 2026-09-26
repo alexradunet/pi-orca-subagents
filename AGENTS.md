@@ -1,12 +1,7 @@
 # pi-orca development
 
-This repository contains a small Pi package that bridges a lead Pi session to Orca orchestration. Keep it narrow: one extension, one workflow skill, provider-free tests, no scheduler/database/broker, no global Pi settings changes, and no Taskdesk source/data changes from this checkout.
+This repository is a skills-only Pi package for Orca-managed development workflows. Keep it narrow: one `orca-development` skill, no extension runtime, no scheduler/database/broker, no scripted orchestrator, no global Pi settings changes, and no Taskdesk source/data changes from this checkout.
 
-Use Bun commands:
+Use native Orca CLI/orchestration documentation for live behavior. There are no Bun build or unit-test targets after the bridge removal; verify manifests, skill frontmatter, docs, and Git cleanliness directly.
 
-```bash
-bun run check
-bun test
-```
-
-Live Orca worker launches, package rollout, and old-package removal require explicit coordinator/owner approval.
+Live Orca worker launches, package rollout, old-package removal, merge, push, install, and public sharing require explicit coordinator/owner approval.
