@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "result": {
+    "runId": "run_test",
+    "deliveryId": null,
+    "messages": [],
+    "count": 0,
+    "acknowledged": "delivery_test",
+    "timedOut": false,
+    "cancelled": false,
+    "connectionLost": false,
+    "mutation": {
+      "requestId": "fixture-id",
+      "replayed": false
+    }
+  }
+}

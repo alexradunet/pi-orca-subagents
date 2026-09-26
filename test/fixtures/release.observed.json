@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "result": {
+    "dispatchId": "ctx_test",
+    "state": "released",
+    "processAction": "closed_agent_terminal",
+    "archive": {
+      "source": "terminal",
+      "status": "captured"
+    },
+    "mutation": {
+      "requestId": "fixture-id",
+      "replayed": false
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "result": {
+    "runId": "run_test",
+    "deliveryId": "delivery_test",
+    "messages": [
+      {
+        "id": "msg_question",
+        "run_id": "run_test",
+        "delivery_contract": "current_delivery",
+        "from_handle": "dispatch:ctx_test",
+        "to_handle": "run:run_test",
+        "subject": "Question",
+        "body": "Should the heading in smoke-a.md be Alpha or Beta?",
+        "type": "question",
+        "priority": "normal",
+        "thread_id": "msg_question",
+        "payload": "{\"taskId\":\"task_test\",\"dispatchId\":\"ctx_test\",\"question\":\"Should the heading in smoke-a.md be Alpha or Beta?\",\"options\":[\"Alpha\",\"Beta\"]}",
+        "read": 0,
+        "sequence": 49,
+        "created_at": "2026-01-01T00:00:00Z",
+        "delivered_at": null,
+        "sender_pane_key": null
+      }
+    ],
+    "count": 1,
+    "replayed": false,
+    "acknowledged": null,
+    "timedOut": false,
+    "cancelled": false,
+    "connectionLost": false,
+    "mutation": {
+      "requestId": "fixture-id",
+      "replayed": false
+    }
+  }
+}
