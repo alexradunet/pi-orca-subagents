@@ -1,11 +1,15 @@
 ---
 name: orca-development
-description: Use when leading Pi development work in Orca: choose an appropriate short process, inspect with the native Orca CLI, coordinate supervised Tasks/Dispatches, review worker evidence, and clean up resources without using a custom orchestration runtime.
+description: >-
+  Use when leading Pi development work in Orca: choose an appropriate short
+  process, inspect with the native Orca CLI, coordinate supervised
+  Tasks/Dispatches, review worker evidence, and clean up resources without
+  using a custom orchestration runtime.
 ---
 
 # Orca Development
 
-Use this skill when a lead Pi session is doing source work in Orca and may need planning, decomposition, workers, review, or cleanup. Orca's installed CLI guide is authoritative for exact commands: resolve the CLI for the current environment, run `orca skills get orca-cli` (or the selected executable's equivalent), and follow its version-matched public guide.
+Use this skill when a lead Pi session is doing source work in Orca and may need planning, decomposition, workers, review, or cleanup. Orca's installed guides are authoritative for exact commands: resolve the CLI for the current environment, run `orca skills get orca-cli` (or the selected executable's equivalent), and follow its version-matched public guide. When coordinating supervised Tasks/Dispatches, messages, blocking asks, worker completion, or decision gates, also read the version-matched orchestration guide with `orca skills get orchestration` before choosing commands.
 
 ## Principles
 
@@ -19,7 +23,7 @@ Use this skill when a lead Pi session is doing source work in Orca and may need 
 ## Lead workflow
 
 1. Clarify the requested outcome and constraints. Use `/skill:improve` only when an advisory review/planning role is useful; that role is read-only when used, but ordinary leads and writers are not blanket read-only.
-2. Inspect current repo state and relevant docs. If Orca state matters, use the native Orca CLI guide rather than remembered command recipes.
+2. Inspect current repo state and relevant docs. If Orca state matters, use the native Orca CLI guide; if coordination state matters, use the native orchestration guide too. Do not rely on remembered command recipes.
 3. Decide the smallest effective execution shape: direct implementation, targeted worker dispatch, parallel independent workers, reviewer, or integration worker. Avoid fixed concurrency policies; stay within explicit user/coordinator limits.
 4. For each worker, provide the objective, repo/base/ref, owned files or components, prohibited areas, success criteria, verification expectations, STOP/ask conditions, and required completion evidence.
 5. Answer worker questions exactly once through Orca's supervised ask/reply flow. If a question asks for a choice, answer the choice asked; if it is malformed or ambiguous, request clarification instead of inventing intent.

@@ -20,6 +20,7 @@ Implemented the owner-approved Pareto replacement in isolated checkout `/home/al
 - `/home/alex/.local/share/mise/installs/pi/0.86.1/pi/docs/packages.md` read fully.
 - `/home/alex/.local/share/mise/installs/pi/0.86.1/pi/docs/skills.md` read fully.
 - Current `orca-cli` skill stub and version-matched `orca-ide skills get orca-cli` guide read for native Orca CLI expectations.
+- Version-matched `orca-ide skills get orchestration` guide read for coordinated Task/Dispatch/message workflows.
 
 ## Verification run
 
@@ -28,22 +29,26 @@ python - <<'PY'
 import json, pathlib, re
 pkg=json.load(open('package.json'))
 assert pkg['pi']=={'skills':['./skills']}
-text=pathlib.Path('skills/orca-development/SKILL.md').read_text()
-assert text.startswith('---\n')
-fm=text.split('---\n',2)[1]
-assert re.search(r'^name: orca-development$', fm, re.M)
-assert re.search(r'^description: .+', fm, re.M)
+for p in pkg['pi']['skills']:
+    assert pathlib.Path(p).exists(), p
 assert not pathlib.Path('src').exists()
 assert not pathlib.Path('test').exists()
-print('manifest and skill checks passed')
+for md in ['README.md','docs/migration.md','docs/live-verification.md','docs/skills-first-report.md','skills/orca-development/SKILL.md']:
+    text=pathlib.Path(md).read_text()
+    for target in re.findall(r'\[[^\]]+\]\(([^)#][^)]+)\)', text):
+        if '://' in target: continue
+        path=(pathlib.Path(md).parent / target).resolve()
+        assert path.exists(), f'{md} -> {target}'
+print('manifest, paths, and local links passed')
 PY
+bun -e "const text=await Bun.file('skills/orca-development/SKILL.md').text(); const fm=text.split('---\\n')[1]; const parsed=Bun.YAML.parse(fm); if (parsed.name !== 'orca-development' || !parsed.description) throw new Error('bad frontmatter'); console.log('YAML frontmatter parses:', parsed.name)"
 
 git diff --check
 ```
 
-Result: manifest and skill checks passed; `git diff --check` passed.
+Result: manifest/path/local-link checks passed; `Bun.YAML.parse` parsed the skill frontmatter. This corrects the earlier afdd9da report, which used regex-only checks and therefore did not truly parser-validate the YAML frontmatter.
 
-Also ran `orca-ide status --json` successfully and inspected the version-matched Orca CLI guide. No live workers, package installs/removals, merges, pushes, global settings edits, Taskdesk edits, paid trials, or nested workers were performed.
+Also ran `orca-ide status --json` successfully and inspected the version-matched Orca CLI and orchestration guides. No live workers, package installs/removals, global settings edits, Taskdesk edits, paid trials, or nested workers were performed during implementation.
 
 ## Remaining gates
 
