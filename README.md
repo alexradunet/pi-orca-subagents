@@ -1,6 +1,6 @@
 # pi-orca
 
-> **Experimental implementation candidate — not live-accepted.** This source is published for review and trials only. Automatic wakeup, recovery behavior, old-extension replacement, global rollout, and Taskdesk-related gates have **not** passed; do not treat this package as production-ready coordination infrastructure.
+> **Experimental implementation candidate — live trial failed.** This source is published for review and trials only. A dedicated live trial confirmed extension load and Run binding, but did **not** verify end-to-end bridge wakeup, inbox acknowledgement, recovery behavior, old-extension replacement, global rollout, or Taskdesk-related gates; do not treat this package as production-ready coordination infrastructure.
 
 A thin Pi package that makes Orca's existing orchestration convenient from a lead Pi session. It exposes exactly one extension (`src/index.ts`) and one workflow skill (`skills/orca-development`); Orca remains the owner of worktrees, terminals, Tasks, Dispatches, messages, cleanup, and lifecycle receipts.
 
@@ -40,7 +40,7 @@ CLI executable selection is fixed per session: explicit `ORCA_CLI_COMMAND`, decl
 
 Inbox injection is attributed and queued as a follow-up, never human input or automatic acknowledgement. Read every `pending` page explicitly before ack (6000-character text slices; concatenate pages to reconstruct complete records). Unknown reply outcomes pause with the original question/Delivery retained; a successful reply receipt is durable and prevents duplicate replies after reload. There is no proven coordinator question-status API: lost reply receipts require manual inspection/runtime-issued recovery, not another answer. Unknown launch reservations remain occupied, including after reload; inspect their existing Task/Dispatch before any replacement. `pending` with `receiptIndex` and `page` exposes retained bounded mutation receipts even while paused.
 
-Verified cleanup currently accepts exact released ownership, verified immediate reuse on the same terminal in this Run, or observed runtime `user_owned`/`user_takeover` retention. Other retention forms fail closed and remain a live gate. No worker is stopped or released automatically by this extension. See [live verification](docs/live-verification.md) for pending gates.
+Verified cleanup currently accepts exact released ownership, verified immediate reuse on the same terminal in this Run, or observed runtime `user_owned`/`user_takeover` retention. Other retention forms fail closed and remain a live gate. No worker is stopped or released automatically by this extension. A failed live trial distinguished successful extension load/binding from unverified end-to-end delivery and recovery; see [live verification](docs/live-verification.md) before running any further trial.
 
 ## Experimental clone/install for review trials
 
@@ -61,4 +61,4 @@ Equivalent portable local install form after cloning:
 pi install /path/to/pi-orca-subagents
 ```
 
-Do not remove older Pi coordination packages, edit project instructions, change global settings, or use this as a replacement workflow until the documented live rollout gates are approved.
+Do not remove older Pi coordination packages, edit project instructions, change global settings, retry live orchestration, or use this as a replacement workflow until the documented live rollout gates are approved.

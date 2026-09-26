@@ -1,10 +1,10 @@
-# Verification record — implementation candidate, not rollout acceptance
+# Verification record — implementation candidate, failed live bridge trial
 
 ## Versions and authority
 
 Inspected Pi documentation and examples: **0.86.1**. Package host development dependencies: **0.86.1**. Orca runtime/live CLI guides: **1.4.192**. Bun: **1.4.2**. The initial draft briefly resolved 0.87.1 development dependencies; final manifest/lockfile were corrected to the inspected 0.86.1 contract.
 
-The native proof was performed by the parent before this executor started. Parent evidence: `/home/alex/Work/GenUIExperiment/plans/001-execution.md` and read-only `plans/evidence/*.json` there. No native receipt is evidence of automatic Pi bridge wakeup.
+The native proof was performed by the parent before this executor started. Parent evidence: `/home/alex/Work/GenUIExperiment/plans/001-execution.md` and read-only `plans/evidence/*.json` there. No native receipt is evidence of automatic Pi bridge wakeup. A later dedicated bridge trial is recorded below as **FAILED/UNVERIFIED** for end-to-end bridge behavior.
 
 ## Native Orca proof — parent verified PASS
 
@@ -39,19 +39,37 @@ An earlier draft had failing shallow mocks and a fast-empty-wait test hang. Thos
 - Cleanup acceptance supports verified release (`released` ownership/release with exact owner Dispatch), verified immediate reuse by a live new Dispatch on the same terminal in this Run, and observed runtime `user_owned`/`user_takeover`. Unproven explicit-retain, pre-existing-terminal, release_pending and release_unknown shapes fail closed. Parent explicitly approved this bounded limitation; it is not a fabricated pass for every cleanup form.
 - Broken authority/downtime/malformed records pause. A normal finite empty timeout rolls into one further bounded wait with no model turn. Shutdown aborts only owned CLI children, never workers/worktrees.
 
-## Automatic bridge live gates — NOT YET RUN
+## Dedicated bridge live trial — FAILED / UNVERIFIED
+
+A dedicated lead loaded only this extension and exposed the expected tools: `read`, `bash`, `edit`, `write`, `orca_delegate`, and `orca_inbox`. Binding to Run `run_97fa33433029` succeeded at 12:25:20, with Orca runtime `1.4.192`; this confirms extension load and Run binding only, not end-to-end delivery.
+
+The trial then made a procedure error: after the bridge was already bound, the test lead called raw orchestration `run-use` at 12:27:41. The bridge checkpoint became paused within about 200 ms and the TUI showed `Invalid inbox authority/connection state`. The exact cause of the cancelled receipt was not captured, so this record does not diagnose a source-code bug.
+
+Both custom `pi --no-extensions` `worker-start --terminal` attempts returned `ok: true` but failed at `stage=dispatch_input` with `lastError=agent_prompt_stalled`, even though the worker prompts later executed. These are runtime-start/input-readiness blockers for this trial. Do not retry live orchestration without new explicit approval.
+
+Observed worker results were failures, not bridge passes:
+
+- Task A slept 60 seconds, then `orca orchestration ask` failed with `ask requires an active supervised Dispatch`; it modified no files.
+- Task B slept 120 seconds, committed only `live-b.md` at `6efda3a`, then deliberately failed `AssertionError [ERR_ASSERTION]: 1 == 2`; its `worker_done` outcome was `failed`.
+- `worker-release` returned retained external-terminal receipts with `processAction=none`; resource ownership was external/release not requested, with original terminal/dispatch identities preserved.
+
+The lead received native runtime nudges as ordinary USER messages at 12:29:56 and 12:30:55. Parent analysis found zero pi-orca custom-message injections, and recorded bridge inbox delivery remained null. `orca_inbox pending` twice returned `No active Delivery`; the lead then incorrectly bypassed the bridge with raw CLI `check`/`ack`. Therefore no bridge wakeup, bridge ack, or bridge recovery PASS can be claimed.
+
+### Live rollout gates after the failed trial
 
 | Required case | State |
 | --- | --- |
-| Dedicated lead loads only this extension; workers' old tools absent | NOT RUN |
-| Two bridge-launched workers overlap, separate edits/common base, actual model selection | NOT RUN |
-| Idle lead automatically wakes for blocking question and exact reply resumes worker | NOT RUN |
-| Busy lead receives completion without interrupting tools/human input | NOT RUN |
+| Dedicated lead loads only this extension; workers' old tools absent | PARTIAL: extension/tool surface verified |
+| `/orca start` or equivalent bridge binding to explicit Run | PARTIAL: binding succeeded for `run_97fa33433029` |
+| Two bridge-launched workers overlap, separate edits/common base, actual model selection | FAILED/UNVERIFIED: custom worker-start attempts hit `agent_prompt_stalled` |
+| Idle lead automatically wakes for blocking question and exact reply resumes worker | FAILED/UNVERIFIED: no custom bridge Delivery; Task A ask failed |
+| Busy lead receives completion without interrupting tools/human input | FAILED/UNVERIFIED: native runtime nudges only, not pi-orca delivery |
+| Bridge `orca_inbox pending`/`ack` handles completion and cleanup | FAILED/UNVERIFIED: pending returned `No active Delivery`; raw CLI was used incorrectly |
 | Pending-question reload/replay and session/tree ownership live behavior | NOT RUN |
-| Live failed completion remains failed | NOT RUN |
-| Explicit stop of approved fixture attempt leaves unrelated terminals/worktrees intact | NOT RUN; extra paid attempt requires approval |
-| Pre-existing/explicit-retain terminal cleanup evidence | NOT RUN / fail-closed acknowledgement |
+| Live failed completion remains failed | OBSERVED via raw CLI only; not a bridge acceptance pass |
+| Explicit stop of approved fixture attempt leaves unrelated terminals/worktrees intact | OBSERVED: fixtures preserved, no force-close |
+| Pre-existing/explicit-retain terminal cleanup evidence | OBSERVED retained external terminals; bridge cleanup acceptance still unverified |
 | Full old-extensions-unloaded acceptance and post-migration round trip | NOT RUN |
 | Global package removal, owner instruction patch and Taskdesk regression gates | NOT RUN; rollout not authorized |
 
-No worker launches, paid smoke calls, global settings changes, Taskdesk writes, merges, pushes or publication were executed by this implementation worker. Steps 6–7 remain parent/owner gates. **Do not recommend global migration based on unit tests alone.**
+No Taskdesk files, private transcripts, auth/environment values, or fixture worktrees/terminals are published here. Candidate publication is experimental only; rollout remains forbidden. The narrow next step is to diagnose supported Pi launcher/input readiness and avoid double-binding before any newly approved short retry.
